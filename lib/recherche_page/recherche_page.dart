@@ -5,6 +5,10 @@ import 'package:get/get.dart';
 class RecherchePage extends GetView<RechercheController> {
   const RecherchePage({super.key});
 
+  void returnTohome() {
+    Get.toNamed('/home');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,7 +16,7 @@ class RecherchePage extends GetView<RechercheController> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.of(context).pop();
+            returnTohome();
           },
         ),
         actions: <Widget>[

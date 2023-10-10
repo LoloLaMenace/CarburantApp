@@ -1,4 +1,5 @@
-import 'package:carburantapp/home_page.dart';
+import 'package:carburantapp/home_page/home_bindings.dart';
+import 'package:carburantapp/home_page/home_page.dart';
 import 'package:carburantapp/recherche_page/recherche_bindings.dart';
 import 'package:carburantapp/recherche_page/recherche_page.dart';
 import 'package:flutter/material.dart';
@@ -17,17 +18,23 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       getPages: [
         GetPage(
-          name: '/Rechercher',
+          name: '/search',
           title: 'Page de recherche',
           page: () => const RecherchePage(),
           binding: RechercheBindings(),
         ),
+        GetPage(
+          name: '/home',
+          title: "Page d'accueil",
+          page: () => const HomePage(),
+          binding: HomeBindings(),
+        )
       ],
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const HomePage(),
+      home: const RecherchePage(),
     );
   }
 }
