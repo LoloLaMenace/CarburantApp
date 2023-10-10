@@ -1,12 +1,13 @@
-import 'package:carburantapp/recherche_page/recherche_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class RecherchePage extends GetView<RechercheController> {
-  const RecherchePage({super.key});
+class SearchPage extends GetView<SearchController> {
+  const SearchPage({super.key});
 
   void returnTohome() {
     Get.toNamed('/home');
+    //Get.toNamed('/home' , arguments: {
+    //"championId": 345,});
   }
 
   @override
