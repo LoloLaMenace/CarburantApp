@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:carburantapp/bottom_navigation_bar.dart';
+class SearchPage extends StatefulWidget {
+  const SearchPage({Key? key}) : super(key: key);
 
-class SearchPage extends GetView<SearchController> {
-  const SearchPage({super.key});
+  @override
+  _SearchPageState createState() => _SearchPageState();
+}
 
-  void returnTohome() {
-    Get.toNamed('/home');
-    //Get.toNamed('/home' , arguments: {
-    //"championId": 345,});
-  }
+class _SearchPageState extends State<SearchPage> {
+  int _currentIndex = 1; // Index de l'élément "Autour de moi"
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class SearchPage extends GetView<SearchController> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            returnTohome();
+            // Implémentez votre logique pour retourner à la page précédente
           },
         ),
         actions: <Widget>[
@@ -49,6 +50,26 @@ class SearchPage extends GetView<SearchController> {
             fontSize: 16.0,
           ),
         ),
+      ),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: _currentIndex, // Assurez-vous que l'index correspond à l'élément "Autour de moi"
+        onTap: (int index) {
+          setState(() {
+            _currentIndex = index;
+            if (index == 0) {
+              Get.toNamed('/home');
+
+            }
+            if (index == 1) {
+              Get.toNamed('/search');
+
+            }
+            if (index == 2) {
+              Get.toNamed('/settings');
+
+            }
+          });
+        },
       ),
     );
   }

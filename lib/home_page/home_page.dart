@@ -1,5 +1,6 @@
+import 'package:carburantapp/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'bottom_navigation_bar.dart'; // Assurez-vous d'importer votre fichier bottom_navigation_bar.dart
+import 'package:get/get.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -31,6 +32,18 @@ class _HomePageState extends State<HomePage> {
         onTap: (int index) {
           setState(() {
             _currentIndex = index;
+            if (index == 0) {
+              Get.toNamed('/home');
+
+            }
+            if (index == 1) {
+              Get.toNamed('/search');
+
+            }
+            if (index == 2) {
+              Get.toNamed('/settings');
+
+            }
           });
         },
       ),
