@@ -1,110 +1,76 @@
+import 'package:carburantapp/search_page/search_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:dio/dio.dart' as dio; // Utilisez un préfixe (ici, 'dio')
 import 'package:carburantapp/bottom_navigation_bar.dart';
 
-class SearchPage extends StatefulWidget {
-  const SearchPage({Key? key}) : super(key: key);
-
-  @override
-  _SearchPageState createState() => _SearchPageState();
-}
-
-class _SearchPageState extends State<SearchPage> {
-  final TextEditingController _cityController = TextEditingController();
-  List<dynamic> _searchResults = [];
-
-  Future<void> _fetchData(String cityName) async {
-    final dio.Dio dioClient = dio.Dio(); // Utilisez le préfixe 'dio'
-    try {
-      dio.Response response = await dioClient.get( // Utilisez le préfixe 'dio'
-        'https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/prix-des-carburants-en-france-flux-instantane-v2/records',
-        queryParameters: {
-          'limit': 10,
-          'where': '"$cityName"',
-        },
-      );
-      setState(() {
-        _searchResults = response.data['records'];
-      });
-    } catch (error) {
-      print(error.toString());
-    }
-  }
+class SearchPage extends GetView<MySearchController> {
+  const SearchPage({super.key}); // Index de l'élément "Autour de moi"
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            // Implémentez votre logique pour retourner à la page précédente
-          },
-        ),
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              width: 200.0,
-              child: Center(
-                child: TextField(
-                  controller: _cityController,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    hintText: 'Entrez votre ville',
-                    fillColor: Colors.white,
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20.0),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'Rechercher votre ville et comparez',
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 16.0,
+              ),
+            ),
+            const SizedBox(height: 20.0), // Espace entre le texte et le bouton
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: TextField(
+                        controller: controller.searchController,
+                        decoration: InputDecoration(
+                          hintText: 'Rechercher...',
+                          fillColor: Colors.white,
+                          filled: true,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.search, // Icône loupe
+                    color: Colors.red, // Couleur de l'icône
+                  ),
+                  onPressed: () {
+                    controller.navigateToCitySearded();
+                    print(controller.searchController.text);
+                  },
+                )
+              ],
             ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {
-              String cityName = _cityController.text;
-              if (cityName.isNotEmpty) {
-                _fetchData(cityName);
-              }
-            },
-          ),
-        ],
-      ),
-      body: ListView.builder(
-        itemCount: _searchResults.length,
-        itemBuilder: (context, index) {
-          var item = _searchResults[index];
-          return ListTile(
-            title: Text(item['fields']['adresse']),
-            subtitle: Text(item['fields']['ville']),
-            // Affichez d'autres détails selon votre besoin
-          );
-        },
+          ],
+        ),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: 1, // Assurez-vous que l'index correspond à l'élément "Autour de moi"
+        currentIndex: controller
+            .currentIndex, // Assurez-vous que l'index correspond à l'élément "Autour de moi"
         onTap: (int index) {
-          setState(() {
-            if (index == 0) {
-              Get.toNamed('/home');
-            } else if (index == 1) {
-              // Restez sur la page de recherche
-            } else if (index == 2) {
-              Get.toNamed('/settings');
-            }
-          });
+          if (index == 0) {
+            Get.toNamed('/home');
+          }
+          if (index == 1) {
+            Get.toNamed('/search');
+          }
+          if (index == 2) {
+            Get.toNamed('/settings');
+          }
         },
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _cityController.dispose();
-    super.dispose();
   }
 }

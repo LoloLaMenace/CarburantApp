@@ -1,3 +1,5 @@
+import 'package:carburantapp/city_searched_page/city_searched_bindings.dart';
+import 'package:carburantapp/city_searched_page/city_searched_page.dart';
 import 'package:carburantapp/home_page/home_bindings.dart';
 import 'package:carburantapp/home_page/home_page.dart';
 import 'package:carburantapp/search_page/search_bindings.dart';
@@ -35,15 +37,21 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/settings',
           title: "Paramètres",
-          page: () => const SettingsPage(),
+          page: () => SettingsPage(),
           binding: SettingsBindings(),
+        ),
+        GetPage(
+          name: '/citySearched',
+          title: "Ville Recherché",
+          page: () => const CitySearchedPage(),
+          binding: CitySearchedBindings(),
         )
       ],
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const HomePage(),
+      initialRoute: '/home',
     );
   }
 }
