@@ -1,16 +1,10 @@
 import 'package:carburantapp/bottom_navigation_bar.dart';
+import 'package:carburantapp/home_page/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
-
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  int _currentIndex = 0;
+class HomePage extends GetView<HomeController> {
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,23 +22,19 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: _currentIndex,
+        currentIndex: controller.currentIndex,
         onTap: (int index) {
-          setState(() {
-            _currentIndex = index;
-            if (index == 0) {
-              Get.toNamed('/home');
+          if (index == 0) {
+            Get.toNamed('/home');
+          }
 
-            }
-            if (index == 1) {
-              Get.toNamed('/search');
+          if (index == 1) {
+            Get.toNamed('/search');
+          }
 
-            }
-            if (index == 2) {
-              Get.toNamed('/settings');
-
-            }
-          });
+          if (index == 2) {
+            Get.toNamed('/settings');
+          }
         },
       ),
     );
