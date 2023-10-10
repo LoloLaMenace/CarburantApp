@@ -9,29 +9,6 @@ class SearchPage extends GetView<MySearchController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              width: 200.0,
-              child: Center(
-                child: TextField(
-                  controller: controller.searchController,
-                  decoration: InputDecoration(
-                    hintText: 'Rechercher...',
-                    fillColor: Colors.white,
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -44,26 +21,37 @@ class SearchPage extends GetView<MySearchController> {
               ),
             ),
             const SizedBox(height: 20.0), // Espace entre le texte et le bouton
-            ElevatedButton(
-              onPressed: () {
-                print(controller.searchController.text);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red, // Couleur du bouton
-                padding:
-                    const EdgeInsets.all(15.0), // Espacement interne du bouton
-                shape: RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.circular(20.0), // Bordure du bouton
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: TextField(
+                        controller: controller.searchController,
+                        decoration: InputDecoration(
+                          hintText: 'Rechercher...',
+                          fillColor: Colors.white,
+                          filled: true,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-              child: const Text(
-                'Rechercher',
-                style: TextStyle(
-                  fontSize: 16.0,
-                  color: Colors.white,
-                ),
-              ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.search, // Icône loupe
+                    color: Colors.red, // Couleur de l'icône
+                  ),
+                  onPressed: () {
+                    controller.navigateToCitySearded();
+                    print(controller.searchController.text);
+                  },
+                )
+              ],
             ),
           ],
         ),

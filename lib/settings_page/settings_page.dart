@@ -16,7 +16,7 @@ class SettingsPage extends GetView<SettingsController> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text("Selectionnez votre carburant"),
+            const Text("Selectionnez votre carburant :"),
             DropdownButton<String>(
               value: controller.selectedValue,
               onChanged: (newValue) {

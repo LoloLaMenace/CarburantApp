@@ -5,5 +5,9 @@ class MySearchController extends GetxController {
   TextEditingController searchController = TextEditingController();
   int currentIndex = 1;
 
-  void navigateToCitySearded() {}
+  void navigateToCitySearded() {
+    Get.offAndToNamed('citySearched', arguments: {
+      "city": searchController.text,
+    });
+  }
 }

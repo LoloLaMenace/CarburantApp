@@ -8,36 +8,49 @@ class CitySearchedPage extends GetView<CitySearchedController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Rechercher votre ville et comparez',
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 16.0,
+    return controller.obx(
+      (state) => Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              controller.returnToSearch();
+            },
+          ),
+          title: Text(controller.city),
+        ),
+        body: const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Rechercher votre ville et comparez',
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 16.0,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
+        ),
+        bottomNavigationBar: CustomBottomNavigationBar(
+          currentIndex: controller
+              .currentIndex, // Assurez-vous que l'index correspond à l'élément "Autour de moi"
+          onTap: (int index) {
+            if (index == 0) {
+              Get.offAndToNamed('/home');
+            }
+            if (index == 1) {
+              Get.offAndToNamed('/search');
+            }
+            if (index == 2) {
+              Get.offAndToNamed('/settings');
+            }
+          },
         ),
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: controller
-            .currentIndex, // Assurez-vous que l'index correspond à l'élément "Autour de moi"
-        onTap: (int index) {
-          if (index == 0) {
-            Get.toNamed('/home');
-          }
-          if (index == 1) {
-            Get.toNamed('/search');
-          }
-          if (index == 2) {
-            Get.toNamed('/settings');
-          }
-        },
-      ),
+      onLoading: const CircularProgressIndicator(),
+      onError: (error) => Text("Une Erreure est survenu : $error"),
     );
   }
 }
