@@ -14,10 +14,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Flutter Demo',
+      title: 'CarburantApp',
       getPages: [
         GetPage(
-          name: '/Rechercher',
+          name: '/search',
           title: 'Page de recherche',
           page: () => const RecherchePage(),
           binding: RechercheBindings(),
