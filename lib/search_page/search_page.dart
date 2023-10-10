@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:dio/dio.dart' as dio; // Utilisez un préfixe (ici, 'dio')
 import 'package:carburantapp/bottom_navigation_bar.dart';
+
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
 
@@ -9,7 +11,26 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  int _currentIndex = 1; // Index de l'élément "Autour de moi"
+  final TextEditingController _cityController = TextEditingController();
+  List<dynamic> _searchResults = [];
+
+  Future<void> _fetchData(String cityName) async {
+    final dio.Dio dioClient = dio.Dio(); // Utilisez le préfixe 'dio'
+    try {
+      dio.Response response = await dioClient.get( // Utilisez le préfixe 'dio'
+        'https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/prix-des-carburants-en-france-flux-instantane-v2/records',
+        queryParameters: {
+          'limit': 10,
+          'where': '"$cityName"',
+        },
+      );
+      setState(() {
+        _searchResults = response.data['records'];
+      });
+    } catch (error) {
+      print(error.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +49,10 @@ class _SearchPageState extends State<SearchPage> {
               width: 200.0,
               child: Center(
                 child: TextField(
+                  controller: _cityController,
+                  keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    hintText: 'Rechercher...',
+                    hintText: 'Entrez votre ville',
                     fillColor: Colors.white,
                     filled: true,
                     border: OutlineInputBorder(
@@ -40,37 +63,48 @@ class _SearchPageState extends State<SearchPage> {
               ),
             ),
           ),
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              String cityName = _cityController.text;
+              if (cityName.isNotEmpty) {
+                _fetchData(cityName);
+              }
+            },
+          ),
         ],
       ),
-      body: const Center(
-        child: Text(
-          'Rechercher votre ville et comparez',
-          style: TextStyle(
-            color: Colors.grey,
-            fontSize: 16.0,
-          ),
-        ),
+      body: ListView.builder(
+        itemCount: _searchResults.length,
+        itemBuilder: (context, index) {
+          var item = _searchResults[index];
+          return ListTile(
+            title: Text(item['fields']['adresse']),
+            subtitle: Text(item['fields']['ville']),
+            // Affichez d'autres détails selon votre besoin
+          );
+        },
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: _currentIndex, // Assurez-vous que l'index correspond à l'élément "Autour de moi"
+        currentIndex: 1, // Assurez-vous que l'index correspond à l'élément "Autour de moi"
         onTap: (int index) {
           setState(() {
-            _currentIndex = index;
             if (index == 0) {
               Get.toNamed('/home');
-
-            }
-            if (index == 1) {
-              Get.toNamed('/search');
-
-            }
-            if (index == 2) {
+            } else if (index == 1) {
+              // Restez sur la page de recherche
+            } else if (index == 2) {
               Get.toNamed('/settings');
-
             }
           });
         },
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _cityController.dispose();
+    super.dispose();
   }
 }

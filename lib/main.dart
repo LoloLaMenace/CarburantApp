@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'CarburantApp',
       getPages: [
         GetPage(
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/home',
           title: "Page d'accueil",
-          page: () => const HomePage(),
+          page: () => const HomePage(), 
           binding: HomeBindings(),
         ),
         GetPage(
