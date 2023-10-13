@@ -25,15 +25,15 @@ class HomePage extends GetView<HomeController> {
         currentIndex: controller.currentIndex,
         onTap: (int index) {
           if (index == 0) {
-            Get.toNamed('/home');
+            Get.offAndToNamed('/home');
           }
 
           if (index == 1) {
-            Get.toNamed('/search');
+            Get.offAndToNamed('/search');
           }
 
           if (index == 2) {
-            Get.toNamed('/settings');
+            Get.offAndToNamed('/settings');
           }
         },
       ),

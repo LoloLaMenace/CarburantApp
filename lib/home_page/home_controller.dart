@@ -1,15 +1,23 @@
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
 class HomeController extends GetxController {
   // int championId = 0;
-  // @override
-  // void onInit() {
-  //   //Si il y a des arguments
-  //   //Et si un argument à la clef 'champioId'
-  //   if (Get.arguments != null && Get.arguments.containsKey("championId")) {
-  //     championId = Get.arguments["championId"];
-  //   }
-  //   super.onInit();
-  // }
+  @override
+  void onInit() async {
+    //Si il y a des arguments
+    //Et si un argument à la clef 'champioId'
+    super.onInit();
+    await getPrice();
+  }
+
+//https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/prix-des-carburants-en-france-flux-instantane-v2/records?limit=10&where="69330"
   int currentIndex = 0;
+
+  Future<void> getPrice() async {
+    var url = Uri.https('data.economie.gouv.fr',
+        "api/explore/v2.1/catalog/datasets/prix-des-carburants-en-france-flux-instantane-v2/records?limit=10&where='69330'");
+    var response = await http.get(url);
+    print(response);
+  }
 }

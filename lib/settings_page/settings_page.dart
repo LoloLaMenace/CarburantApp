@@ -61,13 +61,13 @@ class SettingsPage extends GetView<SettingsController> {
             .currentIndex, // Assurez-vous que l'index correspond à l'élément "Paramètres"
         onTap: (int index) {
           if (index == 0) {
-            Get.toNamed('/home');
+            Get.offAndToNamed('/home');
           }
           if (index == 1) {
-            Get.toNamed('/search');
+            Get.offAndToNamed('/search');
           }
           if (index == 2) {
-            Get.toNamed('/settings');
+            Get.offAndToNamed('/settings');
           }
         },
       ),
