@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 void main() {
+  Get.put<String>("Diesel", tag: 'carburantchoice', permanent: true);
   runApp(const MyApp());
 }
 

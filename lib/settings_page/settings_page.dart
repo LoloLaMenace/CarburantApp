@@ -17,40 +17,20 @@ class SettingsPage extends GetView<SettingsController> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text("Selectionnez votre carburant :"),
-            DropdownButton<String>(
-              value: controller.selectedValue,
-              onChanged: (newValue) {
-                controller.selectedValue = newValue!;
-              },
-              items: <String>['TOUS', 'SP 95', 'SP98', 'DIESEL']
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),
-            const SizedBox(height: 20.0), // Espace entre le texte et le bouton
-            ElevatedButton(
-              onPressed: () {
-                // Implémentez ici la logique lorsque le bouton "Rechercher" est appuyé
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor:
-                    const Color.fromARGB(255, 10, 154, 3), // Couleur du bouton
-                padding:
-                    const EdgeInsets.all(15.0), // Espacement interne du bouton
-                shape: RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.circular(20.0), // Bordure du bouton
-                ),
-              ),
-              child: const Text(
-                'Enregistrer votre choix',
-                style: TextStyle(
-                  fontSize: 16.0,
-                  color: Colors.white,
-                ),
+            Obx(
+              () => DropdownButton<String>(
+                value: controller.selectedValue.value,
+                onChanged: (newValue) {
+                  controller.selectedValue.value = newValue!;
+                  Get.replace<String>(newValue, tag: 'carburantchoice');
+                },
+                items: <String>['SP 95', 'SP98', 'Diesel']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
               ),
             ),
           ],

@@ -19,18 +19,74 @@ class CitySearchedPage extends GetView<CitySearchedController> {
           ),
           title: Text(controller.city),
         ),
-        body: const Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Rechercher votre ville et comparez',
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 16.0,
+        // body: Center(
+        //   child: Column(
+        //     mainAxisAlignment: MainAxisAlignment.center,
+        //     children: [
+        //       Text(
+        //         controller.carburant,
+        //         style: const TextStyle(
+        //           color: Colors.grey,
+        //           fontSize: 16.0,
+        //         ),
+        //       ),
+        //     ],
+        //   ),
+        // ),
+        body: controller.obx(
+          (state) => ListView.builder(
+            itemCount: controller.stationList.length,
+            itemBuilder: (context, index) {
+              final station = controller.stationList[index];
+              return Card(
+                margin: EdgeInsets.all(16.0),
+                child: ListTile(
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(Icons.location_city),
+                          Text("Ville: ${station.cityName}"),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.location_on,
+                            color: Colors.red, // Couleur bleue
+                          ),
+                          Text("Adresse: ${station.address}"),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Icon(Icons.home),
+                          Text("Département: ${station.department}"),
+                        ],
+                      ),
+                      Divider(),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.local_gas_station,
+                            color: Color.fromARGB(
+                                255, 0, 0, 0), // Couleur vert clair
+                          ),
+                          Text(
+                            "${controller.carburant}: ${station.e85Price} €",
+                            style: const TextStyle(
+                              color: Colors.grey,
+                              fontSize: 16.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              );
+            },
           ),
         ),
         bottomNavigationBar: CustomBottomNavigationBar(
