@@ -4,144 +4,132 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class HomePage extends GetView<HomeController> {
-  const HomePage({Key? key});
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Accueil'),
+        title: Row(
+          children: [
+            Image.asset(
+              'assets/images/france_flag.png', // Chemin vers le fichier d'image du drapeau français
+              width: 32, // Ajustez la largeur de l'image selon vos besoins
+              height: 32, // Ajustez la hauteur de l'image selon vos besoins
+            ),
+            const SizedBox(width: 8), // Espacement entre l'image et le texte
+            Text('Le moins cher'),
+          ],
+        ),
       ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              for (int i = 0; i < 10; i++)
-                CityCard(
-                  cityName: 'Ville $i',
-                  department: 'Département $i',
-                  address: 'Adresse $i',
-                  fuelPrices: {
-                    'Diesel': 1.5, // Prix du Diesel
-                    'SP95-E10': 1.7, // Prix du SP95-E10
-                    'SP98': 1.8, // Prix du SP98
-                    'Éthanol': 1.4, // Prix de l'éthanol
-                  },
+      body: controller.obx(
+        (state) => ListView.builder(
+          itemCount: controller.stationList.length,
+          itemBuilder: (context, index) {
+            final station = controller.stationList[index];
+            return Card(
+              margin: EdgeInsets.all(16.0),
+              child: ListTile(
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.location_city),
+                        Text("Ville: ${station.cityName}"),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.location_on,
+                          color: Colors.red, // Couleur bleue
+                        ),
+                        Text("Adresse: ${station.address}"),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Icon(Icons.home),
+                        Text("Département: ${station.department}"),
+                      ],
+                    ),
+                    Divider(),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.local_gas_station,
+                          color: Colors.orange, // Couleur orange
+                        ),
+                        Text(
+                          "Diesle : ${station.gazolePrice} €",
+                          style: TextStyle(
+                              color: Colors.orange), // Même couleur que l'icône
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.local_gas_station,
+                          color: Colors.lightGreen, // Couleur vert clair
+                        ),
+                        Text(
+                          "SP95-E10: ${station.sp95Price} €",
+                          style: TextStyle(
+                              color: Colors
+                                  .lightGreen), // Même couleur que l'icône
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.local_gas_station,
+                          color: Colors.green, // Couleur verte
+                        ),
+                        Text(
+                          "SP98: ${station.sp98Price} €",
+                          style: TextStyle(
+                              color: Colors.green), // Même couleur que l'icône
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.local_gas_station,
+                          color: Colors.blue, // Couleur bleue
+                        ),
+                        Text(
+                          "E85: ${station.e85Price} €",
+                          style: TextStyle(
+                              color: Colors.blue), // Même couleur que l'icône
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-            ],
-          ),
+              ),
+            );
+          },
         ),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: controller.currentIndex,
+        currentIndex: controller
+            .currentIndex, // Assurez-vous que l'index correspond à l'élément "Autour de moi"
         onTap: (int index) {
           if (index == 0) {
             Get.offAndToNamed('/home');
-          } else if (index == 1) {
+          }
+          if (index == 1) {
             Get.offAndToNamed('/search');
-          } else if (index == 2) {
+          }
+          if (index == 2) {
             Get.offAndToNamed('/settings');
           }
         },
       ),
     );
-  }
-}
-
-class CityCard extends StatelessWidget {
-  final String cityName;
-  final String department;
-  final String address;
-  final Map<String, double> fuelPrices;
-
-  CityCard({
-    required this.cityName,
-    required this.department,
-    required this.address,
-    required this.fuelPrices,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.all(16.0),
-      child: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            ListTile(
-              leading: Icon(Icons.location_city),
-              title: Text('Ville: $cityName'),
-            ),
-            ListTile(
-              leading: Icon(Icons.location_on),
-              title: Text('Département: $department'),
-            ),
-            ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Adresse: $address'),
-            ),
-            SizedBox(height: 16.0),
-            Column(
-              children: [
-                Text(
-                  'Type de carburant:',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                for (var entry in fuelPrices.entries)
-                  ListTile(
-                    leading: FuelIcon(entry.key),
-                    title: Text(
-                      '${entry.key} - Prix: ${entry.value.toStringAsFixed(2)} €/L',
-                      style: TextStyle(
-                        color: getFuelColor(entry.key),
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class FuelIcon extends StatelessWidget {
-  final String fuelType;
-
-  FuelIcon(this.fuelType);
-
-  @override
-  Widget build(BuildContext context) {
-    switch (fuelType) {
-      case 'Diesel':
-        return Icon(Icons.local_gas_station, color: Colors.orange);
-      case 'SP95-E10':
-        return Icon(Icons.local_gas_station, color: Colors.lightGreen);
-      case 'SP98':
-        return Icon(Icons.local_gas_station, color: Colors.green);
-      case 'Éthanol':
-        return Icon(Icons.local_gas_station, color: Colors.blue);
-      default:
-        return Icon(Icons.local_gas_station);
-    }
-  }
-}
-
-Color getFuelColor(String fuelType) {
-  switch (fuelType) {
-    case 'Diesel':
-      return Colors.orange;
-    case 'SP95-E10':
-      return Colors.lightGreen;
-    case 'SP98':
-      return Colors.green;
-    case 'Éthanol':
-      return Colors.blue;
-    default:
-      return Colors.black;
   }
 }
