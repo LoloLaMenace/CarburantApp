@@ -1,8 +1,10 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class HomeController extends GetxController {
-  // int championId = 0;
+  var priceList = <String, dynamic>{};
   @override
   void onInit() async {
     //Si il y a des arguments
@@ -32,5 +34,6 @@ class HomeController extends GetxController {
         queryParameters);
     var response = await http.get(url);
     print(response);
+    priceList = jsonDecode(response.body);
   }
 }
