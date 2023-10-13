@@ -70,15 +70,54 @@ class CitySearchedPage extends GetView<CitySearchedController> {
                         children: [
                           const Icon(
                             Icons.local_gas_station,
-                            color: Color.fromARGB(
-                                255, 0, 0, 0), // Couleur vert clair
+                            color: Colors.orange, // Couleur orange
                           ),
                           Text(
-                            "${controller.carburant}: ${station.e85Price} €",
-                            style: const TextStyle(
-                              color: Colors.grey,
-                              fontSize: 16.0,
-                            ),
+                            "Diesle : ${station.gazolePrice} €",
+                            style: TextStyle(
+                                color:
+                                    Colors.orange), // Même couleur que l'icône
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.local_gas_station,
+                            color: Colors.lightGreen, // Couleur vert clair
+                          ),
+                          Text(
+                            "SP95-E10: ${station.sp95Price} €",
+                            style: TextStyle(
+                                color: Colors
+                                    .lightGreen), // Même couleur que l'icône
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.local_gas_station,
+                            color: Colors.green, // Couleur verte
+                          ),
+                          Text(
+                            "SP98: ${station.sp98Price} €",
+                            style: TextStyle(
+                                color:
+                                    Colors.green), // Même couleur que l'icône
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.local_gas_station,
+                            color: Colors.blue, // Couleur bleue
+                          ),
+                          Text(
+                            "E85: ${station.e85Price} €",
+                            style: TextStyle(
+                                color: Colors.blue), // Même couleur que l'icône
                           ),
                         ],
                       ),

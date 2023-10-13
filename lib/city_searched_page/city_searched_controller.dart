@@ -29,7 +29,7 @@ class CitySearchedController extends GetxController with StateMixin {
           'select':
               'id, cp, adresse, ville, gazole_prix, e10_prix, sp95_prix, sp98_prix, e85_prix, departement, code_departement, region, code_region',
           'limit': '20',
-          'where': '${city}',
+          'where': "'$city'",
           'order_by': 'gazole_prix ASC'
         });
     var response = await http.get(url);
