@@ -14,11 +14,11 @@ class HomeController extends GetxController {
 //https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/prix-des-carburants-en-france-flux-instantane-v2/records?limit=1&where="69330"
   int currentIndex = 0;
 
-  final queryParameters = {'param1': ''};
+  final queryParameters = {'limit': '1','where':'"69330"'};
   Future<void> getPrice() async {
     var url = Uri.https(
         'data.economie.gouv.fr',
-        '/api/explore/v2.1/catalog/datasets/prix-des-carburants-en-france-flux-instantane-v2',
+        '/api/explore/v2.1/catalog/datasets/prix-des-carburants-en-france-flux-instantane-v2/records',
         queryParameters);
     var response = await http.get(url);
     print(response);
